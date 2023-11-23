@@ -116,6 +116,8 @@ self: super: {
 
  ament-download = self.callPackage ./ament-download {};
 
+ ament-flake8 = self.callPackage ./ament-flake8 {};
+
  ament-index-cpp = self.callPackage ./ament-index-cpp {};
 
  ament-index-python = self.callPackage ./ament-index-python {};
