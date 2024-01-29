@@ -1,5 +1,5 @@
 
-# Copyright 2023 Open Source Robotics Foundation
+# Copyright 2024 Open Source Robotics Foundation
 # Distributed under the terms of the BSD license
 
 self: super: {
@@ -508,6 +508,8 @@ self: super: {
 
  fastrtps-cmake-module = self.callPackage ./fastrtps-cmake-module {};
 
+ ffmpeg-image-transport-msgs = self.callPackage ./ffmpeg-image-transport-msgs {};
+
  fields2cover = self.callPackage ./fields2cover {};
 
  filters = self.callPackage ./filters {};
@@ -578,11 +580,7 @@ self: super: {
 
  generate-parameter-library = self.callPackage ./generate-parameter-library {};
 
- generate-parameter-library-example = self.callPackage ./generate-parameter-library-example {};
-
  generate-parameter-library-py = self.callPackage ./generate-parameter-library-py {};
-
- generate-parameter-module-example = self.callPackage ./generate-parameter-module-example {};
 
  geodesy = self.callPackage ./geodesy {};
 
@@ -676,9 +674,15 @@ self: super: {
 
  imu-filter-madgwick = self.callPackage ./imu-filter-madgwick {};
 
+ imu-pipeline = self.callPackage ./imu-pipeline {};
+
+ imu-processors = self.callPackage ./imu-processors {};
+
  imu-sensor-broadcaster = self.callPackage ./imu-sensor-broadcaster {};
 
  imu-tools = self.callPackage ./imu-tools {};
+
+ imu-transformer = self.callPackage ./imu-transformer {};
 
  interactive-marker-twist-server = self.callPackage ./interactive-marker-twist-server {};
 
@@ -810,6 +814,10 @@ self: super: {
 
  lgsvl-msgs = self.callPackage ./lgsvl-msgs {};
 
+ libcaer = self.callPackage ./libcaer {};
+
+ libcaer-driver = self.callPackage ./libcaer-driver {};
+
  libcurl-vendor = self.callPackage ./libcurl-vendor {};
 
  libg2o = self.callPackage ./libg2o {};
@@ -898,11 +906,11 @@ self: super: {
 
  mobileye-560-660-msgs = self.callPackage ./mobileye-560-660-msgs {};
 
+ mola-common = self.callPackage ./mola-common {};
+
  mouse-teleop = self.callPackage ./mouse-teleop {};
 
  moveit = self.callPackage ./moveit {};
-
- moveit-chomp-optimizer-adapter = self.callPackage ./moveit-chomp-optimizer-adapter {};
 
  moveit-common = self.callPackage ./moveit-common {};
 
@@ -1659,6 +1667,8 @@ self: super: {
  rqt-console = self.callPackage ./rqt-console {};
 
  rqt-controller-manager = self.callPackage ./rqt-controller-manager {};
+
+ rqt-gauges = self.callPackage ./rqt-gauges {};
 
  rqt-graph = self.callPackage ./rqt-graph {};
 
