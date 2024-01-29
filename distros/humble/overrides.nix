@@ -112,4 +112,16 @@ in with lib; {
       })
     ];
   });
+
+  rcpputils = rosSuper.rcpputils.overrideAttrs ({
+    patches ? [], ...
+  }: {
+    patches = patches ++ [
+      # https://github.com/ros2/rcpputils/pull/184
+      (self.fetchpatch {
+        url = "https://github.com/ros2/rcpputils/pull/184.patch";
+        hash = "sha256-TF0lqtNMXFI4HYnqKd7+UoSym9lVIRaDBSpQr5xiq7Y=";
+      })
+    ];
+  });
 }
