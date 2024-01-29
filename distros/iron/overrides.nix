@@ -123,10 +123,10 @@ in with lib; {
   }: {
     patches = patches ++ [
       # Fix CMake relative install dir assumptions
-      # https://github.com/ros/urdfdom/pull/142
+      # https://github.com/ros/urdfdom/pull/196
       (self.fetchpatch {
-        url = "https://github.com/ros/urdfdom/commit/cbe6884d267779463bb444be851f6404e692cc0a.patch";
-        hash = "sha256-1gTRKIGqiSRion76bGecSfFJSBskYUJguUIa6ePIiX4=";
+        url = "https://github.com/ros/urdfdom/pull/196.patch";
+        hash = "sha256-vZ212hV/J/Ws/DIqwizl6Fa5ZQiWqTSaKVkoWmVTub0=";
       })
     ];
   });
@@ -136,7 +136,7 @@ in with lib; {
   }: {
     patches = patches ++ [
       # Fix CMake relative install dir assumptions
-      # https://github.com/ros/urdfdom_headers/pull/66
+      # https://github.com/ros/urdfdom_headers/pull/78
       (self.fetchpatch {
         url = "https://github.com/ros/urdfdom_headers/pull/78.patch";
         hash = "sha256-LC2TACGma/k6+WE9fTkzY98SgJYKsVuj5O9v84Q5mQ4=";
