@@ -50,7 +50,7 @@ self: super: with self.lib; let
 
       colcon-zsh = pyFinal.callPackage ./colcon/zsh.nix { };
 
-      osrf-pycommon = pyFinal.callPackage ./osrf-pycommon {};
+      osrf-pycommon = pyFinal.callPackage ./osrf-pycommon { };
 
       rosdep = pyFinal.callPackage ./rosdep { };
 
@@ -59,9 +59,12 @@ self: super: with self.lib; let
       rosinstall-generator = pyFinal.callPackage ./rosinstall-generator { };
 
       rospkg = pyFinal.callPackage ./rospkg { };
+
+      empy = pyFinal.callPackage ./empy { };
     });
   };
-in {
+in
+{
   cargo-ament-build = self.callPackage ./cargo-ament-build { };
 
   colcon = with self.python3Packages; colcon-core.withExtensions [
