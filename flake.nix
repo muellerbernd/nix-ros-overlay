@@ -13,6 +13,9 @@
       pkgs = import nixpkgs {
         inherit system;
         overlays = [ self.overlays.default ];
+        config.permittedInsecurePackages = [
+            "freeimage-unstable-2021-11-01"
+        ];
       };
     in {
       legacyPackages = pkgs.rosPackages;
