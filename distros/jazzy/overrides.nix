@@ -53,9 +53,9 @@ in {
   }).overrideAttrs ({
     postInstall ? "", ...
   }: {
-    postInstall = postInstall + ''
-      find $out -name "*config.hpp" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    # postInstall = postInstall + ''
+    #   find $out -name "*config.hpp" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-fuel-tools-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-fuel-tools-vendor {
@@ -64,26 +64,39 @@ in {
   }).overrideAttrs ({
     postInstall ? "", ...
   }: {
-    postInstall = postInstall + ''
-      find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    dontWrapQtApps = true;
+    # postInstall = postInstall + ''
+    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-gui-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-gui-vendor {
     version = "8.3.0";
     hash = "sha256-V0zaL6qrd510hMECCr3/mMkyqf4yu2aaKLRZ6Rw0s/4=";
+    # tarSourceArgs.hook = ''
+    #   # sed -i 's#"../../../#"#g' ./src/cmd/CMakeLists.txt
+    #   ls
+    #   cat src/plugins/CMakeLists.txt
+    #   exit 1
+    # '';
   }).overrideAttrs ({
     postInstall ? "", nativeBuildInputs ? [], propagatedNativeBuildInputs ? [], ...
   }: {
     nativeBuildInputs = nativeBuildInputs ++ [ self.qt5.wrapQtAppsHook ];
     propagatedNativeBuildInputs = propagatedNativeBuildInputs ++ [ self.pkg-config ];
+    dontWrapQtApps = true;
     # "RPATH of binary libGrid3D.so contains a forbidden reference to
     # /build/" (see https://github.com/gazebosim/gz-gui/issues/627).
     postInstall = postInstall + ''
       ${self.patchelf}/bin/patchelf --remove-rpath $out/opt/gz_gui_vendor/lib64/gz-gui-8/plugins/libGrid3D.so
-      find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
+      # find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
+      # find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
     '';
+    # preBuild = ''
+    #   ls
+    #   cat CMakeLists.txt
+    #   exit 1
+    # '';
   });
 
   gz-launch-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-launch-vendor {
@@ -94,10 +107,10 @@ in {
   }: {
     # https://github.com/gazebo-release/gz_common_vendor/pull/2
     nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
-    postInstall = postInstall + ''
-      find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    # postInstall = postInstall + ''
+    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-math-vendor = lib.patchGzAmentVendorGit rosSuper.gz-math-vendor {
@@ -111,9 +124,11 @@ in {
   }).overrideAttrs ({
     postInstall ? "", ...
   }: {
-    postInstall = postInstall + ''
-      find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    dontFixCmake = true;
+    # dontAddPrefix=true;
+    # postInstall = postInstall + ''
+    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-ogre-next-vendor = (lib.patchAmentVendorGit rosSuper.gz-ogre-next-vendor {
@@ -124,11 +139,11 @@ in {
       postInstall ? "", ...
   }: {
     dontFixCmake = true;
-    postInstall = postInstall + ''
-      find $out -name "*.pc" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*/config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*/completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    # postInstall = postInstall + ''
+    #   find $out -name "*.pc" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*/config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*/completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-physics-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-physics-vendor {
@@ -138,10 +153,10 @@ in {
     postInstall ? "", ...
   }: {
     # fix /var/empty
-    postInstall = postInstall + ''
-      find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    # postInstall = postInstall + ''
+    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-plugin-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-plugin-vendor {
@@ -152,11 +167,11 @@ in {
   }: {
     nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
     # fix /var/empty in yaml files
-    postInstall = postInstall + ''
-      find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    # postInstall = postInstall + ''
+    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-rendering-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-rendering-vendor {
@@ -166,11 +181,11 @@ in {
     postInstall ? "", nativeBuildInputs ? [], ...
   }: {
     nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
-    postInstall = postInstall + ''
-      find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    # postInstall = postInstall + ''
+    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-sensors-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-sensors-vendor {
@@ -185,16 +200,19 @@ in {
   gz-sim-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-sim-vendor {
     version = "8.6.0";
     hash = "sha256-zSiPHEh3h2J8hGL342tde5U9FLaGnWs72WD9BqyPf6E=";
+    # tarSourceArgs.hook = ''
+    #   sed -i 's#"../../../#"#g' ./src/cmd/CMakeLists.txt
+    # '';
   }).overrideAttrs({
     postInstall ? "", nativeBuildInputs ? [], ...
   }: {
-    nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
+    # nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config self.wrapGAppsHook ];
     # fix /var/empty in yaml files
-    postInstall = postInstall + ''
-      find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    # postInstall = postInstall + ''
+    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-tools-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-tools-vendor {
@@ -212,23 +230,29 @@ in {
     postFixup = postFixup + ''
       wrapQtApp "$out/opt/gz_tools_vendor/bin/gz"
     '';
-    postInstall = postInstall + ''
-      find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    # postInstall = postInstall + ''
+    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-transport-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-transport-vendor {
     version = "13.4.0";
     hash = "sha256-2Akd3vKr07IdgoJppvUV1nZlHE4RdQfI2R18ihHTDHk=";
+#     tarSourceArgs.hook = ''
+# #      sed -i 's#"../../../#"#g' ./src/cmd/CMakeLists.txt
+#
+#       find . -print -exec sed -i "s#var/empty#opt#g" {} \;
+#       exit 1
+#     '';
   }).overrideAttrs({
     postInstall ? "", ...
   }: {
     # fix /var/empty in yaml files
-    postInstall = postInstall + ''
-      find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    '';
+    # postInstall = postInstall + ''
+    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    # '';
   });
 
   gz-utils-vendor = lib.patchGzAmentVendorGit rosSuper.gz-utils-vendor {
