@@ -61,8 +61,9 @@ in {
     version = "8.3.0";
     hash = "sha256-V0zaL6qrd510hMECCr3/mMkyqf4yu2aaKLRZ6Rw0s/4=";
   }).overrideAttrs ({
-    postInstall ? "", ...
+    nativeBuildInputs ? "", postInstall ? "", ...
   }: {
+    nativeBuildInputs = nativeBuildInputs ++ [ self.qt5.wrapQtAppsHook ];
     # "RPATH of binary libGrid3D.so contains a forbidden reference to
     # /build/" (see https://github.com/gazebosim/gz-gui/issues/627).
     postInstall = postInstall + ''
@@ -89,8 +90,11 @@ in {
     url = "https://github.com/OGRECave/ogre-next.git";
     rev = "v2.3.3";
     fetchgitArgs.hash = "sha256-elSj35LwsLzj1ssDPsk9NW/KSXfiOGYmw9hQSAWdpFM=";
-  }).overrideAttrs({ ... }: {
+  }).overrideAttrs ({
+    nativeBuildInputs ? [], ...
+  }: {
     dontFixCmake = true;
+    nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
   });
 
   gz-physics-vendor = lib.patchGzAmentVendorGit rosSuper.gz-physics-vendor {
@@ -103,10 +107,14 @@ in {
     hash = "sha256-9t6vcnBbfRWu6ptmqYAhmWKDoKAaK631JD9u1C0G0mY=";
   };
 
-  gz-rendering-vendor = lib.patchGzAmentVendorGit rosSuper.gz-rendering-vendor {
+  gz-rendering-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-rendering-vendor {
     version = "8.2.0";
     hash = "sha256-eaWkZKHu566Rub7YSO2lnKdj8YQbhl86v+JR4zrgtjs=";
-  };
+  }).overrideAttrs ({
+    nativeBuildInputs ? [], ...
+  }: {
+    nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
+  });
 
   gz-sensors-vendor = lib.patchGzAmentVendorGit rosSuper.gz-sensors-vendor {
     version = "8.2.0";
