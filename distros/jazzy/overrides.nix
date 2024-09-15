@@ -46,39 +46,20 @@ in {
     nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
   });
 
-  gz-dartsim-vendor = (lib.patchAmentVendorGit rosSuper.gz-dartsim-vendor {
+  gz-dartsim-vendor = lib.patchAmentVendorGit rosSuper.gz-dartsim-vendor {
     url = "https://github.com/dartsim/dart.git";
     rev = "v6.13.2";
     fetchgitArgs.hash = "sha256-AfKPqUiW6BsM98TIzTY2ZcFP1WvURs8/dGOzanIiB9g=";
-  }).overrideAttrs ({
-    postInstall ? "", ...
-  }: {
-    # postInstall = postInstall + ''
-    #   find $out -name "*config.hpp" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
-  });
+  };
 
-  gz-fuel-tools-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-fuel-tools-vendor {
+  gz-fuel-tools-vendor = lib.patchGzAmentVendorGit rosSuper.gz-fuel-tools-vendor {
     version = "9.1.0";
     hash = "sha256-txeIzj2vmvL5NDu6O07c7LwcCWE26OFEzvyc9TBrJAw=";
-  }).overrideAttrs ({
-    postInstall ? "", ...
-  }: {
-    dontWrapQtApps = true;
-    # postInstall = postInstall + ''
-    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
-  });
+  };
 
   gz-gui-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-gui-vendor {
     version = "8.3.0";
     hash = "sha256-V0zaL6qrd510hMECCr3/mMkyqf4yu2aaKLRZ6Rw0s/4=";
-    # tarSourceArgs.hook = ''
-    #   # sed -i 's#"../../../#"#g' ./src/cmd/CMakeLists.txt
-    #   ls
-    #   cat src/plugins/CMakeLists.txt
-    #   exit 1
-    # '';
   }).overrideAttrs ({
     postInstall ? "", nativeBuildInputs ? [], propagatedNativeBuildInputs ? [], ...
   }: {
@@ -89,28 +70,17 @@ in {
     # /build/" (see https://github.com/gazebosim/gz-gui/issues/627).
     postInstall = postInstall + ''
       ${self.patchelf}/bin/patchelf --remove-rpath $out/opt/gz_gui_vendor/lib64/gz-gui-8/plugins/libGrid3D.so
-      # find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-      # find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
     '';
-    # preBuild = ''
-    #   ls
-    #   cat CMakeLists.txt
-    #   exit 1
-    # '';
   });
 
   gz-launch-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-launch-vendor {
     version = "7.1.0";
     hash = "sha256-En3V8i/Ie8+KnSHGlm9Bap7REdLhYBaVHVbOM+/Pzno=";
   }).overrideAttrs ({
-    postInstall ? "", nativeBuildInputs ? [], ...
+    nativeBuildInputs ? [], ...
   }: {
     # https://github.com/gazebo-release/gz_common_vendor/pull/2
     nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
-    # postInstall = postInstall + ''
-    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
   });
 
   gz-math-vendor = lib.patchGzAmentVendorGit rosSuper.gz-math-vendor {
@@ -118,74 +88,38 @@ in {
     hash = "sha256-TEadejtPCR3FAUbyAAME28tmqaxypPTJDYidjZ3FPIY=";
   };
 
-  gz-msgs-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-msgs-vendor {
+  gz-msgs-vendor = lib.patchGzAmentVendorGit rosSuper.gz-msgs-vendor {
     version = "10.3.0";
     hash = "sha256-PQT8EpTxafldnKG3hDSXw2P22gLRg2EfMllrzaTaDEw=";
-  }).overrideAttrs ({
-    postInstall ? "", ...
-  }: {
-    dontFixCmake = true;
-    # dontAddPrefix=true;
-    # postInstall = postInstall + ''
-    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
-  });
+  };
 
-  gz-ogre-next-vendor = (lib.patchAmentVendorGit rosSuper.gz-ogre-next-vendor {
+  gz-ogre-next-vendor = lib.patchAmentVendorGit rosSuper.gz-ogre-next-vendor {
     url = "https://github.com/OGRECave/ogre-next.git";
     rev = "v2.3.3";
     fetchgitArgs.hash = "sha256-elSj35LwsLzj1ssDPsk9NW/KSXfiOGYmw9hQSAWdpFM=";
-  }).overrideAttrs({
-      postInstall ? "", ...
-  }: {
-    dontFixCmake = true;
-    # postInstall = postInstall + ''
-    #   find $out -name "*.pc" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*/config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*/completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
-  });
+  };
 
-  gz-physics-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-physics-vendor {
+  gz-physics-vendor = lib.patchGzAmentVendorGit rosSuper.gz-physics-vendor {
     version = "7.3.0";
     hash = "sha256-PTalEQc9C/QsYMO+XK7aOzZUzC01jxiW6bjdItB5hlM=";
-  }).overrideAttrs({
-    postInstall ? "", ...
-  }: {
-    # fix /var/empty
-    # postInstall = postInstall + ''
-    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
-  });
+  };
 
   gz-plugin-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-plugin-vendor {
     version = "2.0.3";
     hash = "sha256-9t6vcnBbfRWu6ptmqYAhmWKDoKAaK631JD9u1C0G0mY=";
   }).overrideAttrs({
-    postInstall ? "", nativeBuildInputs ? [], ...
+    nativeBuildInputs ? [], ...
   }: {
     nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
-    # fix /var/empty in yaml files
-    # postInstall = postInstall + ''
-    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
   });
 
   gz-rendering-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-rendering-vendor {
     version = "8.2.0";
     hash = "sha256-eaWkZKHu566Rub7YSO2lnKdj8YQbhl86v+JR4zrgtjs=";
   }).overrideAttrs({
-    postInstall ? "", nativeBuildInputs ? [], ...
+    nativeBuildInputs ? [], ...
   }: {
     nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
-    # postInstall = postInstall + ''
-    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
   });
 
   gz-sensors-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-sensors-vendor {
@@ -197,29 +131,16 @@ in {
     nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
   });
 
-  gz-sim-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-sim-vendor {
+  gz-sim-vendor = lib.patchGzAmentVendorGit rosSuper.gz-sim-vendor {
     version = "8.6.0";
     hash = "sha256-zSiPHEh3h2J8hGL342tde5U9FLaGnWs72WD9BqyPf6E=";
-    # tarSourceArgs.hook = ''
-    #   sed -i 's#"../../../#"#g' ./src/cmd/CMakeLists.txt
-    # '';
-  }).overrideAttrs({
-    postInstall ? "", nativeBuildInputs ? [], ...
-  }: {
-    # nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config self.wrapGAppsHook ];
-    # fix /var/empty in yaml files
-    # postInstall = postInstall + ''
-    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
-  });
+  };
 
   gz-tools-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-tools-vendor {
     version = "2.0.1";
     hash = "sha256-sV/T53oVk1fgjwqn/SRTaPTukt+vAlGGxGvTN8+G6Mo=";
   }).overrideAttrs({
-    nativeBuildInputs ? [], propagatedNativeBuildInputs ? [], qtWrapperArgs ? [], postFixup ? "", postInstall ? "", ...
+    nativeBuildInputs ? [], propagatedNativeBuildInputs ? [], qtWrapperArgs ? [], postFixup ? "", ...
   }: {
     nativeBuildInputs = nativeBuildInputs ++ [ self.qt5.wrapQtAppsHook ];
     propagatedNativeBuildInputs = propagatedNativeBuildInputs ++ [self.qt5.qtquickcontrols2 self.qt5.qtgraphicaleffects self.pkg-config];
@@ -230,30 +151,12 @@ in {
     postFixup = postFixup + ''
       wrapQtApp "$out/opt/gz_tools_vendor/bin/gz"
     '';
-    # postInstall = postInstall + ''
-    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
   });
 
-  gz-transport-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-transport-vendor {
+  gz-transport-vendor = lib.patchGzAmentVendorGit rosSuper.gz-transport-vendor {
     version = "13.4.0";
     hash = "sha256-2Akd3vKr07IdgoJppvUV1nZlHE4RdQfI2R18ihHTDHk=";
-#     tarSourceArgs.hook = ''
-# #      sed -i 's#"../../../#"#g' ./src/cmd/CMakeLists.txt
-#
-#       find . -print -exec sed -i "s#var/empty#opt#g" {} \;
-#       exit 1
-#     '';
-  }).overrideAttrs({
-    postInstall ? "", ...
-  }: {
-    # fix /var/empty in yaml files
-    # postInstall = postInstall + ''
-    #   find $out -name "*.yaml" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*config.hh" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    #   find $out -name "*completions/gz" -print -exec sed -i "s#var/empty#opt#g" {} \;
-    # '';
-  });
+  };
 
   gz-utils-vendor = lib.patchGzAmentVendorGit rosSuper.gz-utils-vendor {
     version = "2.2.0";
