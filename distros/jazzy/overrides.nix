@@ -61,11 +61,9 @@ in {
     version = "8.3.0";
     hash = "sha256-V0zaL6qrd510hMECCr3/mMkyqf4yu2aaKLRZ6Rw0s/4=";
   }).overrideAttrs ({
-    postInstall ? "", nativeBuildInputs ? [], propagatedNativeBuildInputs ? [], ...
+    nativeBuildInputs ? "", postInstall ? "", ...
   }: {
     nativeBuildInputs = nativeBuildInputs ++ [ self.qt5.wrapQtAppsHook ];
-    propagatedNativeBuildInputs = propagatedNativeBuildInputs ++ [ self.pkg-config ];
-    dontWrapQtApps = true;
     # "RPATH of binary libGrid3D.so contains a forbidden reference to
     # /build/" (see https://github.com/gazebosim/gz-gui/issues/627).
     postInstall = postInstall + ''
@@ -73,15 +71,10 @@ in {
     '';
   });
 
-  gz-launch-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-launch-vendor {
+  gz-launch-vendor = lib.patchGzAmentVendorGit rosSuper.gz-launch-vendor {
     version = "7.1.0";
     hash = "sha256-En3V8i/Ie8+KnSHGlm9Bap7REdLhYBaVHVbOM+/Pzno=";
-  }).overrideAttrs ({
-    nativeBuildInputs ? [], ...
-  }: {
-    # https://github.com/gazebo-release/gz_common_vendor/pull/2
-    nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
-  });
+  };
 
   gz-math-vendor = lib.patchGzAmentVendorGit rosSuper.gz-math-vendor {
     version = "7.5.0";
@@ -97,9 +90,9 @@ in {
     url = "https://github.com/OGRECave/ogre-next.git";
     rev = "v2.3.3";
     fetchgitArgs.hash = "sha256-elSj35LwsLzj1ssDPsk9NW/KSXfiOGYmw9hQSAWdpFM=";
-  }).overrideAttrs ({
-    nativeBuildInputs ? [], ...
-  }: {
+  }).overrideAttrs({
+      nativeBuildInputs ? [], ...
+    }: {
     dontFixCmake = true;
     nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
   });
@@ -109,32 +102,24 @@ in {
     hash = "sha256-PTalEQc9C/QsYMO+XK7aOzZUzC01jxiW6bjdItB5hlM=";
   };
 
-  gz-plugin-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-plugin-vendor {
+  gz-plugin-vendor = lib.patchGzAmentVendorGit rosSuper.gz-plugin-vendor {
     version = "2.0.3";
     hash = "sha256-9t6vcnBbfRWu6ptmqYAhmWKDoKAaK631JD9u1C0G0mY=";
-  }).overrideAttrs({
-    nativeBuildInputs ? [], ...
-  }: {
-    nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
-  });
+  };
 
   gz-rendering-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-rendering-vendor {
     version = "8.2.0";
     hash = "sha256-eaWkZKHu566Rub7YSO2lnKdj8YQbhl86v+JR4zrgtjs=";
-  }).overrideAttrs({
+  }).overrideAttrs ({
     nativeBuildInputs ? [], ...
   }: {
     nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
   });
 
-  gz-sensors-vendor = (lib.patchGzAmentVendorGit rosSuper.gz-sensors-vendor {
+  gz-sensors-vendor = lib.patchGzAmentVendorGit rosSuper.gz-sensors-vendor {
     version = "8.2.0";
     hash = "sha256-j/8kS+Bvaim2gtsZcp+/u8CAE+N24/5qZhciFR0Q8+M=";
-  }).overrideAttrs({
-    nativeBuildInputs ? [], ...
-  }: {
-    nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
-  });
+  };
 
   gz-sim-vendor = lib.patchGzAmentVendorGit rosSuper.gz-sim-vendor {
     version = "8.6.0";
