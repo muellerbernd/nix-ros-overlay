@@ -2,9 +2,7 @@
   description = "ROS overlay for the Nix package manager";
 
   inputs = {
-    # nixpkgs.url = "github:lopsided98/nixpkgs/nix-ros";
-    nixpkgs.url = "github:muellerbernd/nixpkgs/cmake-hook";
-    # nixpkgs.url = "git+file:///home/ber54988/Desktop/GithubProjects/nixpkgs";
+    nixpkgs.url = "github:lopsided98/nixpkgs/nix-ros";
     flake-utils.url = "github:numtide/flake-utils";
   };
 

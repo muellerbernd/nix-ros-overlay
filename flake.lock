@@ -20,16 +20,18 @@
     },
     "nixpkgs": {
       "locked": {
-        "dirtyRev": "12cad819db9d2320018be4a78c3e694cfe940d0b-dirty",
-        "dirtyShortRev": "12cad819db9d-dirty",
-        "lastModified": 1725282717,
-        "narHash": "sha256-TBENM4gX54BUeHNT60cd/OdlzfPKFiwoiAksUMgNcig=",
-        "type": "git",
-        "url": "file:///home/ber54988/Desktop/GithubProjects/nixpkgs"
+        "lastModified": 1720031269,
+        "narHash": "sha256-rwz8NJZV+387rnWpTYcXaRNvzUSnnF9aHONoJIYmiUQ=",
+        "owner": "lopsided98",
+        "repo": "nixpkgs",
+        "rev": "9f4128e00b0ae8ec65918efeba59db998750ead6",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/ber54988/Desktop/GithubProjects/nixpkgs"
+        "owner": "lopsided98",
+        "ref": "nix-ros",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "root": {
