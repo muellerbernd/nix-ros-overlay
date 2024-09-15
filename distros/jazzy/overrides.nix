@@ -93,11 +93,16 @@ in {
     hash = "sha256-PQT8EpTxafldnKG3hDSXw2P22gLRg2EfMllrzaTaDEw=";
   };
 
-  gz-ogre-next-vendor = lib.patchAmentVendorGit rosSuper.gz-ogre-next-vendor {
+  gz-ogre-next-vendor = (lib.patchAmentVendorGit rosSuper.gz-ogre-next-vendor {
     url = "https://github.com/OGRECave/ogre-next.git";
     rev = "v2.3.3";
     fetchgitArgs.hash = "sha256-elSj35LwsLzj1ssDPsk9NW/KSXfiOGYmw9hQSAWdpFM=";
-  };
+  }).overrideAttrs ({
+    nativeBuildInputs ? [], ...
+  }: {
+    dontFixCmake = true;
+    nativeBuildInputs = nativeBuildInputs ++ [ self.pkg-config ];
+  });
 
   gz-physics-vendor = lib.patchGzAmentVendorGit rosSuper.gz-physics-vendor {
     version = "7.3.0";
