@@ -137,6 +137,9 @@
         endif()
         EOF
       '';
+      preBuild = ''
+        find . -name "*build.make" -print -exec sed -i "s#var/empty#opt#g" {} \;
+      '';
     });
 
   patchBoostPython = pkg: pkg.overrideAttrs ({
