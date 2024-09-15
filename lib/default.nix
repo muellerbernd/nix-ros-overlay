@@ -104,6 +104,9 @@
         VCS_TYPE tar' \
         ${lib.escapeShellArg file}
     '' + postPatch;
+    preBuild = ''
+      find . -name "*build.make" -print -exec sed -i "s#var/empty#opt#g" {} \;
+    '';
   });
 
   # patchAmentVendorGit specialized for gz-*-vendor packages. In
