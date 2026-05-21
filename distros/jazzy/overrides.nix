@@ -1204,7 +1204,7 @@ in {
     # opaque-types crate without network access.
     patchesFor.zenoh_c_vendor = [ ./zenoh-cpp-vendor/zenoh-c.patch ];
   }).overrideAttrs(finalAttrs: {
-    nativeBuildInputs ? [], postPatch ? "", passthru ? {}, ...
+    nativeBuildInputs ? [], patches ? [], postPatch ? "", passthru ? {}, ...
   }: let
     outputHashes = {
       "zenoh-1.6.2" = "sha256-uHm75MxW7ifmYOB3EPVjsPDWKYmk9nk9BLAOt7tvDzo=";
@@ -1222,6 +1222,45 @@ in {
       lockFile = "${zenoh-c-source}/Cargo.lock";
       inherit outputHashes;
     };
+
+    patches = patches ++ [
+      # Bump zenoh to 1.7.1
+      (self.fetchpatch2 {
+        url = "https://github.com/ros2/rmw_zenoh/commit/dcc1941aacacb6d8bbb2946688be062d515ae14a.patch?full_index=1";
+        hash = "sha256-f2RVcla2+y7orrGWn6sDPesxOgDn0Xjfv648teDuwUU=";
+        relative = "zenoh_cpp_vendor";
+      })
+      # Allow use of non-vendored Zenoh if present
+      (self.fetchpatch2 {
+        url = "https://github.com/ros2/rmw_zenoh/commit/822663084183ae7bdc91538d807ef5a66b2197cb.patch?full_index=1";
+        hash = "sha256-3nfbPa4+l5E4KPOath3TkevGKn2O7bWXEOg89/bupco=";
+        relative = "zenoh_cpp_vendor";
+      })
+      # Bump zenoh to 1.8.0
+      (self.fetchpatch2 {
+        url = "https://github.com/ros2/rmw_zenoh/commit/8cbd0d156f0433857a58ddfab723b270ab508293.patch?full_index=1";
+        hash = "sha256-EEo6QZ8P1g9neXg71JMqjmPR4v8F/ERyuM1K6l2oJsA=";
+        relative = "zenoh_cpp_vendor";
+      })
+      # Build against rust >= 1.75 for ROS Lyrical
+      (self.fetchpatch2 {
+        url = "https://github.com/ros2/rmw_zenoh/commit/ec474786b9d98205e91322808064a533972a4741.patch?full_index=1";
+        hash = "sha256-A2tiAMpxzqDSj9Pjy3RX4BAdbzENluB4bQG1IlUuDXI=";
+        relative = "zenoh_cpp_vendor";
+      })
+      # Revert 1.8.0
+      (self.fetchpatch2 {
+        url = "https://github.com/ros2/rmw_zenoh/commit/afcd981a8193dde29bfe82a6062c5d0a58730256.patch?full_index=1";
+        hash = "sha256-VISciBBSwYP53bxfSn3gNqU49mmqup8leFKZjOBxsb8=";
+        relative = "zenoh_cpp_vendor";
+      })
+      # Bump zenoh to 1.8.0 - 2nd attempt
+      (self.fetchpatch2 {
+        url = "https://github.com/ros2/rmw_zenoh/commit/8d49d152e11a5c04ca45d7de6267dabf34c7d0e4.patch?full_index=1";
+        hash = "sha256-iX+nG+o3MSB94x3ohTl2uC306KE3ag1wK4q+mB8rHy0=";
+        relative = "zenoh_cpp_vendor";
+      })
+    ];
 
     # Prepare vendored dependencies for internal opaque-types crate.
     # Execute in subshell to not change variables set by the normal
